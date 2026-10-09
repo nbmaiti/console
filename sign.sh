@@ -28,8 +28,9 @@ for artifact in "${artifacts[@]}"; do
     exit 1
   fi
 
-  base_name="$(basename "$artifact")"
-  bundle_file="${base_name}.sigstore.json"
+  bundle_name="${artifact//%/%25}"
+  bundle_name="${bundle_name//\//%2F}"
+  bundle_file="${bundle_name}.sigstore.json"
 
   echo "Signing artifact: $artifact"
 
