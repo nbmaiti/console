@@ -117,10 +117,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: console-cosign-signatures
-          path: |
-            *.sig
-            *.pem
-            *.cosign.bundle.json
+          path: cosign-signatures.zip
           if-no-files-found: error
 
       - name: Upload built artifacts for inspection
@@ -138,10 +135,6 @@ jobs:
             dist/windows/console_windows_x64_headless.exe
           if-no-files-found: error
 
-      - name: Generate test release tag
-        id: tag
-        run: echo "value=test-console-cosign-$(date -u +%Y%m%d-%H%M%S)" >> "$GITHUB_OUTPUT"
-
       - name: Create draft pre-release with signed artifacts
         uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.3.3
         with:
@@ -150,6 +143,7 @@ jobs:
           name: "[TEST] Console Cosign signing ${{ steps.tag.outputs.value }}"
           draft: true
           prerelease: true
+          fail_on_unmatched_files: true
           body: Throwaway draft release for console cosign workflow validation. Delete after inspection.
           files: |
             console_linux_x64.tar.gz
@@ -160,6 +154,4 @@ jobs:
             console_mac_arm64_headless.tar.gz
             dist/windows/console_windows_x64.exe
             dist/windows/console_windows_x64_headless.exe
-            *.sig
-            *.pem
-            *.cosign.bundle.json
+            cosign-signatures.zip
