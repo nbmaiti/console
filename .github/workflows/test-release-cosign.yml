@@ -135,6 +135,10 @@ jobs:
             dist/windows/console_windows_x64_headless.exe
           if-no-files-found: error
 
+      - name: Generate test release tag
+        id: tag
+        run: echo "value=test-console-cosign-$(date -u +%Y%m%d-%H%M%S)" >> "$GITHUB_OUTPUT"
+        
       - name: Create draft pre-release with signed artifacts
         uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.3.3
         with:
